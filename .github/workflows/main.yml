@@ -1,0 +1,22 @@
+name: Sync Fork
+
+on:
+  schedule:
+    - cron: '0 */2 * * *' # Chạy tự động vào 00:00 mỗi ngày
+  workflow_dispatch: # Cho phép bạn bấm nút chạy thử thủ công
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout target repo
+        uses: actions/checkout@v3
+
+      - name: Sync upstream
+        uses: aormsby/Fork-Sync-With-Upstream-action@v3.4.1
+        with:
+          target_repo_token: ${{ secrets.GITHUB_TOKEN }}
+          upstream_repository: https://github.com/TienCE04/Nhom33_Chude9_CNWEB.git
+          upstream_branch: main # hoặc master tùy repo gốc
+          target_branch: main   # nhánh bạn muốn cập nhật vào
+          test_mode: false
