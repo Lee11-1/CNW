@@ -2,8 +2,8 @@ name: Sync Fork
 
 on:
   schedule:
-    - cron: '0 */2 * * *' # Chạy tự động vào 00:00 mỗi ngày
-  workflow_dispatch: # Cho phép bạn bấm nút chạy thử thủ công
+    - cron: '0 */2 * * *' # Chạy tự động mỗi 2 tiếng một lần
+  workflow_dispatch:      # Nút bấm chạy thủ công để test luôn
 
 jobs:
   sync:
@@ -16,7 +16,8 @@ jobs:
         uses: aormsby/Fork-Sync-With-Upstream-action@v3.4.1
         with:
           target_repo_token: ${{ secrets.GITHUB_TOKEN }}
-          upstream_repository: https://github.com/TienCE04/Nhom33_Chude9_CNWEB.git
-          upstream_branch: main # hoặc master tùy repo gốc
-          target_branch: main   # nhánh bạn muốn cập nhật vào
+          # LƯU Ý: Chỉ điền "Username/RepoName", KHÔNG điền link https://
+          upstream_repository: TienCE04/Nhom33_Chude9_CNWEB
+          upstream_branch: main
+          target_branch: main
           test_mode: false
