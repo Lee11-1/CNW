@@ -23,6 +23,9 @@ const Register = () => {
     password: false,
     confirmPassword: false,
   });
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  const hasWhitespace = /\s/;
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -43,10 +46,10 @@ const Register = () => {
       });
       return;
     }
-    if (!email.trim()) {
+    if (!emailRegex.test(email)) {
       toast({
         title: t('common.error'),
-        description: t('register.emailRequired'),
+        description: "Email không đúng định dạng (ví dụ: user@example.com)",
         variant: "destructive",
       });
       return;
@@ -59,10 +62,18 @@ const Register = () => {
       });
       return;
     }
-    if (password.length < 4) {
+    if (hasWhitespace.test(password)) {
       toast({
-        title: t('common.error'),
-        description: t('register.passwordMinLength'),
+        title: "Lỗi",
+        description: "Mật khẩu không được chứa khoảng trắng",
+        variant: "destructive",
+      });
+      return;
+    }
+    if (!passwordRegex.test(password)) {
+      toast({
+        title: "Mật khẩu yếu",
+        description: "Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt (@$!%*?&)",
         variant: "destructive",
       });
       return;
@@ -239,7 +250,7 @@ const Register = () => {
                   />
                   {touched.password && !password.trim() && (
                     <p className="text-xs text-red-500 mt-1 text-left">
-                      {t('register.passwordMinLength')}
+                      Mật khẩu tối thiểu 8 ký tự, gồm chữ hoa, thường, số và ký tự đặc biệt.
                     </p>
                   )}
                 </div>
